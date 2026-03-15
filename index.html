@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Fashion House | Premium Custom Clothing</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">✦</span>
+                <div class="logo-text">Dream Fashion House</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#customize">Customize</a></li>
+                <li><a href="#orders">My Orders</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="cartBtn" class="cart-btn" onclick="toggleCart(true)">
+                    <i data-lucide="shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <button id="authBtn" class="auth-btn" onclick="showAuthModal()">Login</button>
+            </div>
+            <div class="mobile-menu">
+                <i data-lucide="menu"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">✨ New Collection 2026</div>
+            <h1 class="hero-title">Where Tradition<br>Meets <span class="gradient-text">Elegance</span></h1>
+            <p class="hero-subtitle">Discover our exquisite collection of custom-crafted traditional wear. Designed for your perfect fit.</p>
+            <div class="hero-buttons">
+                <a href="#categories" class="btn btn-primary">Explore Collection</a>
+                <a href="#customize" class="btn btn-secondary">Customize Your Dress</a>
+            </div>
+        </div>
+        <div class="hero-image-container">
+            <div class="hero-image-wrapper">
+                <img src="https://pbs.twimg.com/media/FQHfymeXMAQAet3.jpg" alt="Dream Fashion House" class="hero-image">
+                <div class="floating-card card-1">
+                    <div class="floating-image">
+                        <img src="https://kphoutfits.com/cdn/shop/files/Traditional_black_kurta_set_for_men_featuring_detailed_golden_embroidery_suitable_for_formal_Indian_attire..png?v=1734978465" alt="Kurta">
+                    </div>
+                    <div class="floating-info">
+                        <span class="stock-badge in-stock">In Stock</span>
+                        <h4>Premium Kurta</h4>
+                        <p>From ৳2,499</p>
+                    </div>
+                </div>
+            </div>
+            <div class="floating-card card-2">
+                <div class="floating-image">
+                    <img src="https://images.unsplash.com/photo-1594552072238-b8a33785b261?w=400" alt="Wedding">
+                </div>
+                <div class="floating-info">
+                    <span class="stock-badge low-stock">Only 3 Left</span>
+                    <h4>Wedding Collection</h4>
+                    <p>From ৳12,500</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj_72WMbvIitD6YPbDRJf9AoB8UnhAzDHKHQ&s" alt="About Us">
+                    <div class="experience-badge">
+                        <span class="years">15+</span>
+                        <span class="exp-text">Years of<br>Excellence</span>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <span class="section-tag">About Us</span>
+                    <h2 class="section-title">Crafting Dreams<br>Into Reality</h2>
+                    <p class="about-text">At Dream Fashion House, we believe that every individual deserves clothing that fits not just their body, but their personality. Founded in 2010, we have been at the forefront of blending traditional craftsmanship with modern aesthetics.</p>
+                    <p class="about-text">Our master tailors bring decades of experience to every stitch, ensuring that your custom-made garments are nothing short of perfect. From intimate family gatherings to grand celebrations, we dress you for life's most precious moments.</p>
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <i data-lucide="scissors"></i>
+                            <span>Custom Tailoring</span>
+                        </div>
+                        <div class="about-feature">
+                            <i data-lucide="truck"></i>
+                            <span>Global Shipping</span>
+                        </div>
+                        <div class="about-feature">
+                            <i data-lucide="shield-check"></i>
+                            <span>Premium Quality</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features & Popular Products -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Featured</span>
+                <h2 class="section-title">Popular This Season</h2>
+                <p class="section-subtitle">Handpicked favorites with exclusive discounts</p>
+            </div>
+            <div class="products-grid" id="featuredProducts">
+                <!-- Products loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories" class="categories">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Collections</span>
+                <h2 class="section-title">Shop by Category</h2>
+                <p class="section-subtitle">Explore our diverse range of traditional wear</p>
+            </div>
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Detail Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content category-modal">
+            <button class="modal-close" onclick="closeCategoryModal()">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="category-header">
+                <h2 id="categoryTitle">Category Name</h2>
+                <p id="categoryDescription">Category description</p>
+            </div>
+            <div class="category-products" id="categoryProducts">
+                <!-- Products in category -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 2D Customization Section -->
+    <section id="customize" class="customize-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Design Studio</span>
+                <h2 class="section-title">Design Your Perfect Punjabi</h2>
+                <p class="section-subtitle">Choose your kurta color, pick an embroidery design, and position it exactly where you want</p>
+            </div>
+
+            <div class="customize-container">
+
+                <!-- LEFT: Preview -->
+                <div class="customize-preview">
+                    <!-- Kurta Canvas -->
+                    <div class="kurta-canvas" id="kurtaPreview">
+                        <img src="w1.png" id="kurtaBase" class="kurta-base" alt="Kurta Base">
+                        <img src="Punjabi Kurta Neck Free Embroidery Design, Free Panjabi Embrodiery Design (73)-Photoroom.png"
+                             id="kurtaDesign"
+                             class="kurta-design"
+                             alt="Embroidery Design">
+                    </div>
+
+                    <!-- Position + Size Controls -->
+                    <div class="position-controls">
+                        <p class="pos-title"><i data-lucide="move"></i> Adjust Design Position &amp; Size</p>
+
+                        <div class="slider-row">
+                            <span class="slider-label">↑ Vertical</span>
+                            <input type="range" id="designPositionY" min="0" max="90" value="0" oninput="updateDesignTransform()">
+                            <span class="slider-val" id="valY">0%</span>
+                        </div>
+
+                        <div class="slider-row">
+                            <span class="slider-label">← Horizontal</span>
+                            <input type="range" id="designPositionX" min="10" max="90" value="50" oninput="updateDesignTransform()">
+                            <span class="slider-val" id="valX">50%</span>
+                        </div>
+
+                        <div class="slider-row">
+                            <span class="slider-label">⤢ Size</span>
+                            <input type="range" id="designSize" min="10" max="100" value="35" oninput="updateDesignTransform()">
+                            <span class="slider-val" id="valSize">35%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Controls -->
+                <div class="customize-controls">
+
+                    <!-- Kurta Color -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i data-lucide="palette"></i> Select Punjabi Color
+                        </label>
+                        <div class="kurta-options">
+                            <button class="kurta-btn active" onclick="changeKurta('w1.png', this)">
+                                <img src="w1.png" alt="White">
+                                <span>White</span>
+                            </button>
+                            <button class="kurta-btn" onclick="changeKurta('b1.png', this)">
+                                <img src="b1.png" alt="Black">
+                                <span>Black</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Design Selection -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i data-lucide="sparkles"></i> Choose Embroidery Design
+                        </label>
+                        <div class="design-options-2d">
+                            <!-- No Design -->
+                            <button class="design-2d-btn" onclick="changeDesign('none', this)">
+                                <div class="no-design-thumb">✕</div>
+                                <span>No Design</span>
+                            </button>
+                            <!-- Design 1 -->
+                            <button class="design-2d-btn active" onclick="changeDesign('Punjabi Kurta Neck Free Embroidery Design, Free Panjabi Embrodiery Design (73)-Photoroom.png', this)">
+                                <img src="Punjabi Kurta Neck Free Embroidery Design, Free Panjabi Embrodiery Design (73)-Photoroom.png" alt="Design 1">
+                                <span>Design 1</span>
+                            </button>
+                            <!-- Design 2 -->
+                            <button class="design-2d-btn" onclick="changeDesign('Punjabi Kurta Neck Free Embroidery Design, Free Panjabi Embrodiery Design (63)-Photoroom.png', this)">
+                                <img src="Punjabi Kurta Neck Free Embroidery Design, Free Panjabi Embrodiery Design (63)-Photoroom.png" alt="Design 2">
+                                <span>Design 2</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Fabric -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            <i data-lucide="layers"></i> Fabric Type
+                        </label>
+                        <select class="fabric-select" id="fabricSelect">
+                            <option value="cotton">Premium Cotton</option>
+                            <option value="silk">Pure Silk (+৳500)</option>
+                            <option value="linen">Linen Blend (+৳300)</option>
+                            <option value="blend">Silk-Cotton Blend (+৳400)</option>
+                        </select>
+                    </div>
+
+                    <!-- Measurements -->
+                    <div class="measurements-panel">
+                        <h3 class="panel-title">📏 Your Measurements (Inches)</h3>
+                        <div class="measurement-inputs">
+                            <div class="input-group">
+                                <label>Chest</label>
+                                <input type="number" id="chest" placeholder="40" min="20" max="60" step="0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Shoulder</label>
+                                <input type="number" id="shoulder" placeholder="18" min="10" max="30" step="0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Sleeve Length</label>
+                                <input type="number" id="sleeve" placeholder="24" min="15" max="35" step="0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Shirt Length</label>
+                                <input type="number" id="length" placeholder="28" min="20" max="40" step="0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Neck</label>
+                                <input type="number" id="neck" placeholder="15" min="10" max="20" step="0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Waist</label>
+                                <input type="number" id="waist" placeholder="34" min="20" max="50" step="0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Hip</label>
+                                <input type="number" id="hip" placeholder="38" min="25" max="55" step="0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Wrist</label>
+                                <input type="number" id="wrist" placeholder="7" min="5" max="10" step="0.5">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price -->
+                    <div class="price-estimate">
+                        <h4>Estimated Price</h4>
+                        <div class="price-display" id="customPrice">৳3,499</div>
+                        <div class="stock-status" id="customStock">In Stock: Made to Order</div>
+                    </div>
+
+                    <button class="btn btn-primary btn-full" onclick="addCustomToCart()">
+                        <i data-lucide="shopping-bag"></i>
+                        Add to Cart
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Orders Section -->
+    <section id="orders" class="orders-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">My Orders</span>
+                <h2 class="section-title">Track Your Orders</h2>
+                <p class="section-subtitle">View and manage your custom orders</p>
+            </div>
+            <div id="ordersList" class="orders-list">
+                <div class="empty-state">
+                    <i data-lucide="package"></i>
+                    <p>Please login to view your orders</p>
+                    <button class="btn btn-primary" onclick="showAuthModal()">Login Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="cart-close" onclick="toggleCart(false)">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">৳0</span>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content auth-modal">
+            <button class="modal-close" onclick="closeAuthModal()">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+            </div>
+            
+            <div id="loginForm" class="auth-form">
+                <h3>Welcome Back</h3>
+                <p>Sign in to your Dream Fashion House account</p>
+                <input type="email" id="loginEmail" placeholder="Email Address" class="auth-input">
+                <input type="password" id="loginPassword" placeholder="Password" class="auth-input">
+                <button class="btn btn-primary btn-full" onclick="handleLogin()">Sign In</button>
+            </div>
+
+            <div id="registerForm" class="auth-form hidden">
+                <h3>Create Account</h3>
+                <p>Join Dream Fashion House for exclusive benefits</p>
+                <input type="text" id="regName" placeholder="Full Name" class="auth-input">
+                <input type="email" id="regEmail" placeholder="Email Address" class="auth-input">
+                <input type="tel" id="regPhone" placeholder="Phone Number" class="auth-input">
+                <textarea id="regAddress" placeholder="Current Address" class="auth-input" rows="3"></textarea>
+                <input type="password" id="regPassword" placeholder="Create Password" class="auth-input">
+                <button class="btn btn-primary btn-full" onclick="handleRegister()">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content admin-modal">
+            <button class="modal-close" onclick="closeAdminModal()">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="admin-header">
+                <h2>Admin Dashboard</h2>
+                <div class="admin-info">
+                    <span id="adminName">Admin</span>
+                    <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+            
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <h4 id="totalOrders">0</h4>
+                    <p>Total Orders</p>
+                </div>
+                <div class="stat-card">
+                    <h4 id="pendingOrders">0</h4>
+                    <p>Pending Approval</p>
+                </div>
+                <div class="stat-card">
+                    <h4 id="totalProducts">0</h4>
+                    <p>Products in Stock</p>
+                </div>
+                <div class="stat-card">
+                    <h4 id="lowStock">0</h4>
+                    <p>Low Stock Items</p>
+                </div>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('orders')">Orders</button>
+                <button class="admin-tab" onclick="switchAdminTab('products')">Products</button>
+                <button class="admin-tab" onclick="switchAdminTab('customers')">Customers</button>
+            </div>
+
+            <div id="adminOrders" class="admin-panel">
+                <h3>Recent Orders</h3>
+                <div class="admin-list" id="adminOrdersList">
+                    <!-- Orders loaded here -->
+                </div>
+            </div>
+
+            <div id="adminProducts" class="admin-panel hidden">
+                <div class="admin-actions">
+                    <button class="btn btn-primary" onclick="showAddProductModal()">
+                        <i data-lucide="plus"></i> Add New Product
+                    </button>
+                </div>
+                <div class="admin-list" id="adminProductsList">
+                    <!-- Products loaded here -->
+                </div>
+            </div>
+
+            <div id="adminCustomers" class="admin-panel hidden">
+                <div class="admin-list" id="adminCustomersList">
+                    <!-- Customers loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
